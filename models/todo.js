@@ -6,7 +6,37 @@ const todoSchema = new Schema(
     userId: {
       type: String,
     },
-    startDate: {
+    created: {
+      type: Date,
+    },
+    proprosedStartDate: {
+      type: Date,
+    },
+    neededby: {
+      type: Date,
+    },
+    actualStartDate: {
+      type: Date,
+    },
+    actualEndDate: {
+      type: Date,
+    },
+    title: {
+      type: string,
+    },
+    text: {
+      type: string,
+    },
+    type: {
+      type: string,
+    },
+    subTasks: {
+      type: string,
+    },
+    priority: {
+      type: Date,
+    },
+    status: {
       type: Date,
     },
     updated: {
@@ -14,7 +44,7 @@ const todoSchema = new Schema(
       default: new Date(),
     },
   },
-  { collection: 'users' }
+  { collection: 'todo' }
 );
 
 module.exports = mongoose.model('Todo', todoSchema);

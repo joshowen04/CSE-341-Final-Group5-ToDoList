@@ -9,9 +9,6 @@ const UserSchema = new Schema(
     userId: {
       type: String,
     },
-    email: {
-      type: String,
-    },
     updated: {
       type: Date,
       default: new Date(),
