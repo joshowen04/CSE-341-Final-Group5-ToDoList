@@ -5,7 +5,7 @@ const doc = {
     title: 'CSE-341-Final-Group5-ToDoList',
     description: 'Group 5 final project, Advanced todo list',
   },
-  host: 'https://cse-341-final-group5-todolist.onrender.com',
+  host: 'cse-341-final-group5-todolist.onrender.com',
   schemes: ['https'],
 };
 

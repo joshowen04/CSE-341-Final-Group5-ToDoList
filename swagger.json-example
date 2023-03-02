@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Winter2023 API",
-    "description": "Contacts API",
+    "title": "CSE-341-Final-Group5-ToDoList",
+    "description": "Group 5 final project, Advanced todo list",
     "version": "1.0.0"
   },
-  "host": "cse-341-webbackend2-2.onrender.com",
+  "host": "cse-341-final-group5-todolist.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
@@ -14,7 +14,7 @@
   "paths": {
     "/inventory": {
       "get": {
-        "description": "",
+        "description": "Get all inventory",
         "parameters": [],
         "responses": {
           "200": {
@@ -23,7 +23,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "insert an item",
         "parameters": [
           {
             "name": "body",
@@ -32,25 +32,19 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Barbeque Sauce"
+                },
+                "id": {
+                  "example": "123456"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Smokey and delicious"
                 },
-                "ingredients": {
-                  "example": ["any","any"]
+                "quantity": {
+                  "example": "3"
                 },
-                "tags": {
-                  "example": ["any","any"]
-                },
-                "availability": {
-                  "example": true
-                },
-                "typeofPreparation": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
+                "minimumQuantity": {
+                  "example": "2"
                 }
               }
             }
@@ -71,7 +65,7 @@
     },
     "/inventory/{inventoryId}": {
       "get": {
-        "description": "",
+        "description": "Get 1 item based on inventoryId",
         "parameters": [
           {
             "name": "inventoryId",
@@ -87,7 +81,7 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Update fields by inventoryId",
         "parameters": [
           {
             "name": "inventoryId",
@@ -102,25 +96,19 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Barbeque Sauce"
+                },
+                "id": {
+                  "example": "123456"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Smokey and delicious"
                 },
-                "ingredients": {
-                  "example": ["any","any"]
+                "quantity": {
+                  "example": "3"
                 },
-                "tags": {
-                  "example": ["any","any"]
-                },
-                "availability": {
-                  "example": true
-                },
-                "typeofPreparation": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
+                "minimumQuantity": {
+                  "example": "2"
                 }
               }
             }
@@ -139,7 +127,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete an item by iventoryId",
         "parameters": [
           {
             "name": "inventoryId",
@@ -184,23 +172,11 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
+                "username": {
+                  "example": "masterCrafter22"
                 },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "userLevel": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
+                "userId": {
+                  "example": "1"
                 }
               }
             }
@@ -248,23 +224,11 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "example": "any"
+                "username": {
+                  "example": "masterCrafter22"
                 },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "userLevel": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
+                "userId": {
+                  "example": "1"
                 }
               }
             }
