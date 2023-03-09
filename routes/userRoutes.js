@@ -8,5 +8,9 @@ module.exports = function (app) {
   app.route('/users').get(users.list_all_users).post(users.create_user);
   app.route('/api-docs').get(swaggerUi.setup(swaggerDocument));
 
-  app.route('/users/:userId').get(users.read_user).put(users.update_user).delete(users.delete_user);
+  app
+    .route('/users/:userId')
+    .get(users.read_user)
+    .put(users.update_user)
+    .delete(users.delete_user);
 };

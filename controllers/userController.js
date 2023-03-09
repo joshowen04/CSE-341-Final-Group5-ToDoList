@@ -22,7 +22,7 @@ create_user = function (req, res) {
     email: req.body.email,
     password: req.body.password,
     userLevel: req.body.userLevel,
-    address: req.body.address
+    address: req.body.address,
   };
   const new_user = new User(user);
   new_user.save(function (err, user) {
@@ -39,7 +39,7 @@ update_user = function (req, res) {
     email: null,
     password: null,
     userLevel: null,
-    address: null
+    address: null,
   };
   for (parameter in req.body) {
     //console.log(req.body[`${parameter}`]);
@@ -55,12 +55,19 @@ update_user = function (req, res) {
     }
   }
   if (validated) {
-    User.findOneAndUpdate({ _id: req.params.userId }, user, { new: true }, function (err, user) {
-      if (err) res.send(err);
-      res.status(204).json({ message: 'Item successfully updated' });
-    });
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      user,
+      { new: true },
+      function (err, user) {
+        if (err) res.send(err);
+        res.status(204).json({ message: 'Item successfully updated' });
+      }
+    );
   } else {
-    res.status(400).json('Please make sure to provide all of the required values');
+    res
+      .status(400)
+      .json('Please make sure to provide all of the required values');
   }
 };
 
@@ -90,5 +97,5 @@ module.exports = {
   create_user,
   delete_user,
   update_user,
-  read_user
+  read_user,
 };

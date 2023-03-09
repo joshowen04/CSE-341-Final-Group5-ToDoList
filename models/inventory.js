@@ -5,23 +5,23 @@ const inventorySchema = new Schema(
   {
     id: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
-        type: String,
-        required: true
-      },
+      type: String,
+      required: true,
+    },
     description: {
-    type: String,
-    required: true
+      type: String,
+      required: true,
     },
     quantity: {
-    type: String,
-    required: true
-    },    
+      type: String,
+      required: true,
+    },
     minimumQuantity: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     updated: {
       type: Date,
