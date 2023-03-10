@@ -5,10 +5,10 @@
     "description": "Group 5 final project, Advanced todo list",
     "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "cse-341-final-group5-todolist.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/user/users": {
