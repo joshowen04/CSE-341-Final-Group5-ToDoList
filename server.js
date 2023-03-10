@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json())
     .use(cors())
     .use("/user", require("./routes/userRoutes"))
+    .use("/shoppingList", require("./routes/shoppingList"))
+    .use("/todo", require("./routes/todo"))
     .use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .listen(PORT, function () {
         console.log(`Listening on port ${PORT}`);
