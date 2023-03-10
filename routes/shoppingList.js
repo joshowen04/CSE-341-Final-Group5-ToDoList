@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const shoppingListController = require('../controllers/shoppingList');
+const shoppingListController = require('../controllers/shoppingListControllers');
 
 // CREATE a new shopping list item
 router.post('/', shoppingListController.create);

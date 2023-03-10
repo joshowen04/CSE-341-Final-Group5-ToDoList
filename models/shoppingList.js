@@ -6,15 +6,15 @@ const shoppingListSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     quantity: {
       type: String,
-      default: '1',
+      default: '1'
     },
     updated: {
       type: Date,
-      default: new Date(),
+      default: new Date()
     }
   },
   { collection: 'shoppingList' }

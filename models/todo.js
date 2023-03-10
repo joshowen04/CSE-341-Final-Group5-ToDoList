@@ -4,44 +4,44 @@ const Schema = mongoose.Schema;
 const todoSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: String
     },
     created: {
-      type: Date,
+      type: Date
     },
     proprosedStartDate: {
-      type: Date,
+      type: Date
     },
     neededby: {
-      type: Date,
+      type: Date
     },
     actualStartDate: {
-      type: Date,
+      type: Date
     },
     actualEndDate: {
-      type: Date,
+      type: Date
     },
     title: {
-      type: string,
+      type: String
     },
     text: {
-      type: string,
+      type: String
     },
     type: {
-      type: string,
+      type: String
     },
     subTasks: {
-      type: string,
+      type: String
     },
     priority: {
-      type: Date,
+      type: Date
     },
     status: {
-      type: Date,
+      type: Date
     },
     updated: {
       type: Date,
-      default: new Date(),
+      default: new Date()
     },
   },
   { collection: 'todo' }
