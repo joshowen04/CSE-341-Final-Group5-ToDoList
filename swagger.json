@@ -127,6 +127,140 @@
           }
         }
       }
+    },
+    "/inventory": {
+      "get": {
+        "description": "Get all inventory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "insert an item",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Barbeque Sauce"
+                },
+                "id": {
+                  "example": "123456"
+                },
+                "description": {
+                  "example": "Smokey and delicious"
+                },
+                "quantity": {
+                  "example": "3"
+                },
+                "minimumQuantity": {
+                  "example": "2"
+                }
+              }
+            }
+          }
+
+
+
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/inventory/{inventoryId}": {
+      "get": {
+        "description": "Get 1 item based on inventoryId",
+        "parameters": [
+          {
+            "name": "inventoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "description": "Update fields by inventoryId",
+        "parameters": [
+          {
+            "name": "inventoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Barbeque Sauce"
+                },
+                "id": {
+                  "example": "123456"
+                },
+                "description": {
+                  "example": "Smokey and delicious"
+                },
+                "quantity": {
+                  "example": "3"
+                },
+                "minimumQuantity": {
+                  "example": "2"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete an item by iventoryId",
+        "parameters": [
+          {
+            "name": "inventoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   }
 }

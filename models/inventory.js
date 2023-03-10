@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const inventorySchema = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
