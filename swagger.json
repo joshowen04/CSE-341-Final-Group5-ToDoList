@@ -128,125 +128,234 @@
         }
       }
     },
-    "/inventory/inventory": {
+    "/shoppingList/shopping-list": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
       "get": {
-        "description": "Get all inventory",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/shoppingList/shopping-list/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/inventory/inventory": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/inventory/inventory/{invId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "invId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "invId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "invId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/todo/todo": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/todo/todo/findByUserId": {
+      "get": {
+        "description": "",
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "description": "insert an item",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "Barbeque Sauce"
-                },
-                "id": {
-                  "example": "123456"
-                },
-                "description": {
-                  "example": "Smokey and delicious"
-                },
-                "quantity": {
-                  "example": "3"
-                },
-                "minimumQuantity": {
-                  "example": "2"
-                }
-              }
-            }
-          }
-
-
-
-        ],
+      }
+    },
+    "/todo/todo/findByStatus": {
+      "get": {
+        "description": "",
+        "parameters": [],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
-    "/inventory/inventory/{inventoryId}": {
+    "/todo/todo/findByText": {
       "get": {
-        "description": "Get 1 item based on inventoryId",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/todo/todo/findByType": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/todo/todo/findByTitle": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/todo/todo/{todoId}": {
+      "delete": {
+        "description": "",
         "parameters": [
           {
-            "name": "inventoryId",
+            "name": "todoId",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           }
         }
       },
       "put": {
-        "description": "Update fields by inventoryId",
+        "description": "",
         "parameters": [
           {
-            "name": "inventoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "Barbeque Sauce"
-                },
-                "id": {
-                  "example": "123456"
-                },
-                "description": {
-                  "example": "Smokey and delicious"
-                },
-                "quantity": {
-                  "example": "3"
-                },
-                "minimumQuantity": {
-                  "example": "2"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "delete": {
-        "description": "Delete an item by iventoryId",
-        "parameters": [
-          {
-            "name": "inventoryId",
+            "name": "todoId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -255,9 +364,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         }
       }
