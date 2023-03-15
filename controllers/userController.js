@@ -17,8 +17,8 @@ list_all_users = function (req, res) {
 create_user = function (req, res) {
   console.log('create_user function');
   const user = {
-    userName: req.body.firstName,
-    userId: req.body.lastName
+    userName: req.body.userName,
+    userId: req.body.userId
   };
   const new_user = new User(user);
   new_user.save(function (err, user) {
