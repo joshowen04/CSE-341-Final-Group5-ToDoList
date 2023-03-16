@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const shoppingListController = require("../controllers/shoppingListControllers");
+const shoppingListController = require('../controllers/shoppingListControllers');
 
 // // CREATE a new shopping list item
 // router.post('/', shoppingListController.create);
@@ -20,28 +20,28 @@ const shoppingListController = require("../controllers/shoppingListControllers")
 // module.exports = router;
 
 // CREATE a new shopping list item
-router.post("/shopping-list", (req, res) => {
-  res.status(201).send("This works");
+router.post('/shopping-list', (req, res) => {
+  res.status(201).send('This works');
 });
 
 // READ all shopping list items
-router.get("/shopping-list", (req, res) => {
-  res.status(201).send("This works");
+router.get('/shopping-list', (req, res) => {
+  res.status(201).send('This works');
 });
 
 // READ a single shopping list item by ID
-router.get("/shopping-list/:id", (req, res) => {
-  res.status(201).send("This works");
+router.get('/shopping-list/:id', (req, res) => {
+  res.status(201).send('This works');
 });
 
 // UPDATE a shopping list item by ID
-router.put("/shopping-list/:id", (req, res) => {
-  res.status(201).send("This works");
+router.put('/shopping-list/:id', (req, res) => {
+  res.status(201).send('This works');
 });
 
 // DELETE a shopping list item by ID
-router.delete("/shopping-list/:id", (req, res) => {
-  res.status(201).send("This works");
+router.delete('/shopping-list/:id', (req, res) => {
+  res.status(201).send('This works');
 });
 
 module.exports = router;
