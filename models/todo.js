@@ -42,7 +42,7 @@ const todoSchema = new Schema(
     updated: {
       type: Date,
       default: new Date()
-    },
+    }
   },
   { collection: 'todo' }
 );

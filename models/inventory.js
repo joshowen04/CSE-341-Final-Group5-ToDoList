@@ -22,7 +22,7 @@ const inventorySchema = new Schema(
     updated: {
       type: Date,
       default: new Date()
-    },
+    }
   },
   { collection: 'inventory' }
 );

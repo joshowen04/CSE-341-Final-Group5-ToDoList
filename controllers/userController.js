@@ -17,8 +17,8 @@ list_all_users = function (req, res) {
 create_user = function (req, res) {
   console.log('create_user function');
   const user = {
-    userName: req.body.userName,
-    userId: req.body.userId
+    userName: req.body.userName
+    //, userId: req.body.userId
   };
   const new_user = new User(user);
   new_user.save(function (err, user) {
@@ -30,8 +30,8 @@ create_user = function (req, res) {
 
 update_user = function (req, res) {
   let user = {
-    userName: null,
-    userId: null
+    userName: null
+    //, userId: null
   };
   for (parameter in req.body) {
     //console.log(req.body[`${parameter}`]);
