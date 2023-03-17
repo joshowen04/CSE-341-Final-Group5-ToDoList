@@ -3,19 +3,19 @@ const router = express.Router();
 const shoppingListController = require("../controllers/shoppingListControllers");
 
 // // CREATE a new shopping list item
-// router.post('/', shoppingListController.create);
+// router.post('/', shoppingListController.addListItem);
 
 // // READ all shopping list items
-// router.get('/', shoppingListController.getAll);
+// router.get('/', shoppingListController.getAllListItems);
 
 // // READ a single shopping list item by ID
-// router.get('/:id', shoppingListController.getById);
+// router.get('/:id', shoppingListController.getListItemById);
 
 // // UPDATE a shopping list item by ID
-// router.patch('/:id', shoppingListController.updateById);
+// router.patch('/:id', shoppingListController.updateListItemById);
 
 // // DELETE a shopping list item by ID
-// router.delete('/:id', shoppingListController.deleteById);
+// router.delete('/:id', shoppingListController.deleteListItemById);
 
 // module.exports = router;
 
