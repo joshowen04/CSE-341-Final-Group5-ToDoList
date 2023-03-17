@@ -1,8 +1,9 @@
 module.exports = {
   env: {
-    browser: true,
-    es2021: true,
-    node: true,
+    'es6': true,
+    'browser': true,
+    'node': true,
+    'jest': true
   },
   extends: ['eslint:recommended', 'prettier'],
   parserOptions: {
@@ -10,37 +11,41 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'jest', 'prettier'],
-  rules: {
-    semi: ['error', 'always'],
-    quotes: ['error', 'single'],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
+  'rules': {
+    'no-unused-vars': [
+      1,
       {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
+        'argsIgnorePattern': 'res|next|^err'
+      }
     ],
-    'import/no-dynamic-require': 0,
-    'global-require': 0,
-    'import/prefer-default-export': 0,
+    'arrow-body-style': [2, 'as-needed'],
+    'no-param-reassign': [
+      2,
+      {
+        'props': false
+      }
+    ],
+    'no-console': 1,
+    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
+    'func-names': 0,
+    'space-unary-ops': 2,
+    'space-in-parens': 'error',
+    'space-infix-ops': 'error',
+    'comma-dangle': 0,
+    'max-len': 0,
+    'import/extensions': 0,
     'no-underscore-dangle': 0,
-    'no-await-in-loop': 0,
-    'no-restricted-syntax': 0,
-    'no-return-await': 0,
-    'no-console': 0,
-    'prettier/prettier': [
-      'error',
+    'consistent-return': 0,
+    'radix': 0,
+    'no-shadow': [
+      2,
       {
-        trailingComma: 'es5',
-        singleQuote: true,
-        printWidth: 80,
-        tabWidth: 2,
-        endOfLine: 'lf',
-        arrowParens: 'always',
-      },
+        'hoist': 'all',
+        'allow': ['resolve', 'reject', 'done', 'next', 'err', 'error']
+      }
     ],
-  },
+    'no-unused-expressions': 'off',
+    'indent': ['error', 2],
+    'no-tabs': 'error',
+  }
 };
