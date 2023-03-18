@@ -1,7 +1,7 @@
 const ShoppingList = require('../models/shoppingList');
 
 // CREATE a new shopping list item
-exports.create = async (req, res) => {
+addListItem = async (req, res) => {
   try {
     const { id, name, quantity } = req.body;
     const shoppingListItem = await ShoppingList.create({ id, name, quantity });
@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 };
 
 // READ all shopping list items
-exports.getAll = async (req, res) => {
+getAllListItems = async (req, res) => {
   try {
     const shoppingListItems = await ShoppingList.find();
     res.json(shoppingListItems);
@@ -24,7 +24,7 @@ exports.getAll = async (req, res) => {
 };
 
 // READ a single shopping list item by ID
-exports.getById = async (req, res) => {
+getListItemById = async (req, res) => {
   try {
     const { id } = req.params;
     const shoppingListItem = await ShoppingList.findOne({ id });
@@ -39,7 +39,7 @@ exports.getById = async (req, res) => {
 };
 
 // UPDATE a shopping list item by ID
-exports.updateById = async (req, res) => {
+updateListItemById = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
@@ -59,7 +59,7 @@ exports.updateById = async (req, res) => {
 };
 
 // DELETE a shopping list item by ID
-exports.deleteById = async (req, res) => {
+deleteListItemById = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedShoppingListItem = await ShoppingList.findOneAndDelete({ id });
@@ -71,4 +71,12 @@ exports.deleteById = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
+};
+
+module.exports = {
+  addListItem,
+  getAllListItems,
+  getListItemById,
+  updateListItemById,
+  deleteListItemById,
 };
