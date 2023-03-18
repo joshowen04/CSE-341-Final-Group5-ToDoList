@@ -31,12 +31,9 @@ const todoSchema = new Schema(
       type: String
     },
     subTasks: {
-      type: String
+      type: Array
     },
     priority: {
-      type: Date
-    },
-    status: {
       type: Date
     },
     updated: {

@@ -1,36 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const todoController = require('../controllers/todoController')
 
-router.post('/todo', (req, res) => {
-  res.status(201).send('This works');
+router.get('/findByUserId/:uid', (req, res) => {
+  todoController.findByUserId(req, res);
 });
 
-router.get('/todo/findByUserId', (req, res) => {
-  res.send('This works');
+router.get('/findById/:id', (req, res) => {
+  console.log(req.params.id)
+  todoController.findById(req, res);
 });
 
-router.get('/todo/findByStatus', (req, res) => {
-  res.send('This works');
+router.get('/findByStatus/:status', (req, res) => {
+  todoController.findByStatus(req, res);
 });
 
-router.get('/todo/findByText', (req, res) => {
-  res.send('This works');
+router.get('/findByType/:type', (req, res) => {
+  todoController.findByType(req, res);
 });
 
-router.get('/todo/findByType', (req, res) => {
-  res.send('This works');
+router.get('/findByTitle/:title', (req, res) => {
+  todoController.findByTitle(req, res);
 });
 
-router.get('/todo/findByTitle', (req, res) => {
-  res.send('This works');
+router.post('/', (req, res) => {
+  todoController.addTodoItem(req, res);
 });
 
-router.delete('/todo/:todoId', (req, res) => {
-  res.sendStatus(204);
+router.put('/:id', (req, res) => {
+  todoController.updateTodoItem(req, res);
 });
 
-router.put('/todo/:todoId', (req, res) => {
-  res.send('This works');
+router.delete('/:todoId', (req, res) => {
+  console.log(req.params.todoId)
+  todoController.deleteTodoItem(req, res);
 });
 
 module.exports = router;
