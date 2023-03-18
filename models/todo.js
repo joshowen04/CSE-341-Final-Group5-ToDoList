@@ -36,6 +36,9 @@ const todoSchema = new Schema(
     priority: {
       type: Date
     },
+    status: {
+      type: String
+    },
     updated: {
       type: Date,
       default: new Date()

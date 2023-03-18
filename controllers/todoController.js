@@ -86,10 +86,11 @@ exports.addTodoItem = function (req, res) {
       type: req.body.type,
       subTasks: req.body.subTasks,
       priority: req.body.priority,
+      status: req.body.status,
       lastUpdated: req.body.lastUpdated,
     }
 
-    const allFieldsExist = doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.lastUpdated;
+    const allFieldsExist = doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.status && doc.lastUpdated;
     if (!allFieldsExist) {
       res.status(400).json('All fields must be filled out.');
       return
@@ -126,10 +127,11 @@ exports.updateTodoItem = function (req, res) {
       type: req.body.type,
       subTasks: req.body.subTasks,
       priority: req.body.priority,
+      status: req.body.status,
       lastUpdated: req.body.lastUpdated,
     }
 
-    const allFieldsExist = req.params.id && doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.lastUpdated;
+    const allFieldsExist = doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.status && doc.lastUpdated;
     if (!allFieldsExist) {
       res.status(400).json('All fields must be filled out.');
       return
