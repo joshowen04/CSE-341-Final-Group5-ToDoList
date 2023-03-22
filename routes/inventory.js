@@ -1,27 +1,22 @@
-const inv = require('../controllers/inventoryController.js');
-
 const express = require('express');
 const router = express.Router();
+const invController = require('../controllers/inventoryController');
 
-router.post('/inventory', (req, res) => {
-  res.status(201).send('This works');
+router.get('/', (req, res) => {
+  invController.getAllInvItems(req, res);
 });
-router.get('/inventory', (req, res) => {
-  res.status(201).send('This works');
+router.get('/:invId', (req, res) => {
+  invController.getInvById(req, res);
 });
-router.get('/inventory', (req, res) => {
-  res.status(201).send('This works');
+router.post('/', (req, res) => {
+  invController.createInvItem(req, res);
+});
+router.put('/:invId', (req, res) => {
+  invController.updateInvItem(req, res);
 });
 
-router.delete('/inventory/:invId', (req, res) => {
-  res.sendStatus(204);
-});
-
-router.get('/inventory/:invId', (req, res) => {
-  res.status(201).send('This works');
-});
-router.put('/inventory/:invId', (req, res) => {
-  res.status(201).send('This works');
+router.delete('/:invId', (req, res) => {
+  invController.deleteInvItem(req, res);
 });
 
 module.exports = router;
