@@ -113,7 +113,7 @@
         }
       }
     },
-    "/shoppingList/": {
+    "/shoppingList/shoppingList": {
       "post": {
         "description": "",
         "parameters": [
@@ -155,7 +155,7 @@
         }
       }
     },
-    "/shoppingList/{id}": {
+    "/shoppingList/shoppingList/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -402,6 +402,9 @@
           "200": {
             "description": "OK"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -425,6 +428,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -450,6 +456,9 @@
           "200": {
             "description": "OK"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -474,29 +483,8 @@
           "200": {
             "description": "OK"
           },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/todo/findByTitle/{title}": {
-      "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "title",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -662,9 +650,6 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

@@ -8,10 +8,14 @@ exports.findByUserId = function (req, res) {
     Todo.find({ userId: req.params.uid })
       .then(todos => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(todos);
+        if (todos.length > 0) {
+          res.status(200).json(todos);
+        } else {
+          res.status(404).json({ message: 'No todos found' });
+        }
       })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -22,10 +26,14 @@ exports.findById = function (req, res) {
     Todo.find({ _id: req.params.id })
       .then(todos => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(todos);
+        if (todos.length > 0) {
+          res.status(200).json(todos);
+        } else {
+          res.status(404).json({ message: 'Todo not found' });
+        }
       })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -36,13 +44,16 @@ exports.findByStatus = function (req, res) {
     Todo.find({ status: req.params.status })
       .then(todos => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(todos);
+        if (todos.length > 0) {
+          res.status(200).json(todos);
+        } else {
+          res.status(404).json({ message: 'No todos found' });
+        }
       })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
-
 
 exports.findByType = function (req, res) {
   try {
@@ -51,24 +62,14 @@ exports.findByType = function (req, res) {
     Todo.find({ type: req.params.type.toLowerCase() })
       .then(todos => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(todos);
+        if (todos.length > 0) {
+          res.status(200).json(todos);
+        } else {
+          res.status(404).json({ message: 'No todos found' });
+        }
       })
   } catch (error) {
-    res.status(500).json(error);
-  }
-}
-
-exports.findByTitle = function (req, res) {
-  try {
-    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
-
-    Todo.find({ title: req.params.title })
-      .then(todos => {
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(todos);
-      })
-  } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -92,7 +93,7 @@ exports.addTodoItem = function (req, res) {
 
     const allFieldsExist = doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.status && doc.lastUpdated;
     if (!allFieldsExist) {
-      res.status(400).json('All fields must be filled out.');
+      res.status(400).json({ message: 'All fields must be filled out.' });
       return
     }
     mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
@@ -101,7 +102,7 @@ exports.addTodoItem = function (req, res) {
     // Save the new document to the database
     newTodo.save({ new: true })
       .then(todo => {
-        res.status(201).json(todo._id);
+        res.status(201).json({ _id: todo._id });
       })
       .catch(error => {
         res.status(500).json(
@@ -109,7 +110,7 @@ exports.addTodoItem = function (req, res) {
         );
       });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -133,11 +134,11 @@ exports.updateTodoItem = function (req, res) {
 
     const allFieldsExist = doc.userId && doc.created && doc.proposedStartDate && doc.neededBy && doc.actualStartDate && doc.actualEndDate && doc.title && doc.text && doc.type && doc.subTasks && doc.priority && doc.status && doc.lastUpdated;
     if (!allFieldsExist) {
-      res.status(400).json('All fields must be filled out.');
+      res.status(400).json({ message: 'All fields must be filled out.' });
       return
     }
     if (req.params.id.length !== 24) {
-      res.status(400).json('Invalid ID.');
+      res.status(400).json({ message: 'Invalid ID.' });
       return
     }
     mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
@@ -146,33 +147,26 @@ exports.updateTodoItem = function (req, res) {
       if (result) {
         res.status(204).json(doc);
       } else {
-        res.status(404).json('Item not found')
+        res.status(404).json({ message: 'Item not found' })
       }
     })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
-
 }
 
 exports.deleteTodoItem = function (req, res) {
   try {
     if (req.params.todoId.length !== 24) {
-      res.status(400).json('Invalid ID.');
+      res.status(400).json({ message: 'Invalid ID.' });
       return
     }
     mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 
-    Todo.findOneAndDelete({ _id: req.params.todoId }).then(function (error, todo) {
-      if (error) {
-        res.status(500).json(error);
-      } else if (todo.deletedCount === 0) {
-        res.status(404).json({ message: 'Todo Item not found.' });
-      } else {
-        res.status(204).json({ message: 'Deleted' });
-      }
+    Todo.findOneAndDelete({ _id: req.params.todoId }).then(function () {
+      res.status(204).json({ message: 'Deleted' });
     })
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 }
