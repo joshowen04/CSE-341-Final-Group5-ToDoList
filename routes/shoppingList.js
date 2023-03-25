@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const shoppingListController = require('../controllers/shoppingListController');
 
 // Import the shopping list controller functions
 const {
@@ -12,10 +11,10 @@ const {
 } = require('../controllers/shoppingListController');
 
 // Define routes for shopping list CRUD operations
-router.post('/shoppingList', createShoppingListItem);
-router.get('/shoppingList', getShoppingList);
-router.get('/shoppingList/:id', getShoppingListItemById);
-router.put('/shoppingList/:id', updateShoppingListItem);
-router.delete('/shoppingList/:id', deleteShoppingListItem);
+router.post('/', createShoppingListItem);
+router.get('/', getShoppingList);
+router.get('/:id', getShoppingListItemById);
+router.put('/:id', updateShoppingListItem);
+router.delete('/:id', deleteShoppingListItem);
 
 module.exports = router;

@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 const ShoppingListItem = require('../models/shoppingList');
 
-const getShoppingList = async (req, res) => {
+exports.getShoppingList = function (req, res) {
   try {
-    const shoppingList = await ShoppingListItem.find();
-    res.status(200).json(shoppingList);
+    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
+
+    ShoppingListItem.find()
+      .then(shoppingList => {
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(shoppingList);
+      })
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json(error);
   }
 };
 
-const getShoppingListItemById = async (req, res) => {
+exports.getShoppingListItemById = function (req, res) {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -19,32 +23,41 @@ const getShoppingListItemById = async (req, res) => {
   }
 
   try {
-    const shoppingListItem = await ShoppingListItem.findById(id);
+    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 
-    if (!shoppingListItem) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
+    ShoppingListItem.findById(id)
+      .then(shoppingListItem => {
+        if (!shoppingListItem) {
+          return res.status(404).json({ message: 'Item not found' });
+        }
 
-    res.status(200).json(shoppingListItem);
+        res.status(200).json(shoppingListItem);
+      })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json(error);
   }
 };
 
-const createShoppingListItem = async (req, res) => {
+exports.createShoppingListItem = function (req, res) {
   const { name, quantity } = req.body;
-
-  const newShoppingListItem = new ShoppingListItem({ name, quantity });
+  console.log(`Creating shopping list item with name: ${name} and quantity: ${quantity}`);
 
   try {
-    await newShoppingListItem.save();
-    res.status(201).json(newShoppingListItem);
+    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
+
+    const newShoppingListItem = new ShoppingListItem({ name, quantity });
+
+    newShoppingListItem.save()
+      .then(savedShoppingListItem => {
+        console.log('Created shopping list item:', savedShoppingListItem);
+        res.status(201).json(savedShoppingListItem);
+      })
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    res.status(409).json(error);
   }
 };
 
-const updateShoppingListItem = async (req, res) => {
+exports.updateShoppingListItem = function (req, res) {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
@@ -53,23 +66,26 @@ const updateShoppingListItem = async (req, res) => {
   }
 
   try {
-    const updatedShoppingListItem = await ShoppingListItem.findByIdAndUpdate(
+    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
+
+    ShoppingListItem.findByIdAndUpdate(
       id,
       { name, quantity, updated: new Date() },
       { new: true }
-    );
+    )
+      .then(updatedShoppingListItem => {
+        if (!updatedShoppingListItem) {
+          return res.status(404).json({ message: 'Item not found' });
+        }
 
-    if (!updatedShoppingListItem) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
-
-    res.status(200).json(updatedShoppingListItem);
+        res.status(200).json(updatedShoppingListItem);
+      })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json(error);
   }
 };
 
-const deleteShoppingListItem = async (req, res) => {
+exports.deleteShoppingListItem = function (req, res) {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -77,22 +93,17 @@ const deleteShoppingListItem = async (req, res) => {
   }
 
   try {
-    const deletedShoppingListItem = await ShoppingListItem.findByIdAndRemove(id);
+    mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
 
-    if (!deletedShoppingListItem) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
+    ShoppingListItem.findByIdAndRemove(id)
+      .then(deletedShoppingListItem => {
+        if (!deletedShoppingListItem) {
+          return res.status(404).json({ message: 'Item not found' });
+        }
 
-    res.status(200).json({ message: 'Item deleted successfully' });
+        res.status(200).json({ message: 'Item deleted successfully' });
+      })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json(error);
   }
-};
-
-module.exports = {
-  getShoppingList,
-  getShoppingListItemById,
-  createShoppingListItem,
-  updateShoppingListItem,
-  deleteShoppingListItem,
 };
