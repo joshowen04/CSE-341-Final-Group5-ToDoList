@@ -113,7 +113,7 @@
         }
       }
     },
-    "/shoppingList/shoppingList": {
+    "/shoppingList/": {
       "post": {
         "description": "",
         "parameters": [
@@ -144,18 +144,21 @@
       },
       "get": {
         "description": "",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Not Found"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/shoppingList/shoppingList/{id}": {
+    "/shoppingList/{id}": {
       "get": {
         "description": "",
         "parameters": [
