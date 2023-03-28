@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
 
-list_all_users = function (req, res) {
+exports.list_all_users = function (req, res) {
   try {
     User.find({}, function (err, user) {
       if (err) res.send(err);
@@ -14,7 +14,7 @@ list_all_users = function (req, res) {
   }
 };
 
-create_user = function (req, res) {
+exports.create_user = function (req, res) {
   console.log('create_user function');
   const user = {
     userName: req.body.userName
@@ -28,14 +28,13 @@ create_user = function (req, res) {
   });
 };
 
-update_user = function (req, res) {
+exports.update_user = function (req, res) {
   let user = {
     userName: null
     //, userId: null
   };
   for (parameter in req.body) {
     //console.log(req.body[`${parameter}`]);
-
     user[parameter] = req.body[`${parameter}`];
     //console.log(item);
   }
@@ -63,14 +62,14 @@ update_user = function (req, res) {
   }
 };
 
-read_user = function (req, res) {
+exports.read_user = function (req, res) {
   User.findById(req.params.userId, function (err, user) {
     if (err) res.send(err);
     res.json(user);
   });
 };
 
-delete_user = function (req, res) {
+exports.delete_user = function (req, res) {
   User.deleteOne({ _id: req.params.userId }, function (err, user) {
     if (err) {
       res.send(err);
@@ -84,10 +83,10 @@ delete_user = function (req, res) {
   });
 };
 
-module.exports = {
-  list_all_users,
-  create_user,
-  delete_user,
-  update_user,
-  read_user,
-};
+// module.exports = {
+//   list_all_users,
+//   create_user,
+//   delete_user,
+//   update_user,
+//   read_user,
+// };
