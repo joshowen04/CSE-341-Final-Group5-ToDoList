@@ -6,9 +6,6 @@ const UserSchema = new Schema(
     userName: {
       type: String
     },
-    // userId: {
-    //   type: String
-    // },
     updated: {
       type: Date,
       default: new Date()
