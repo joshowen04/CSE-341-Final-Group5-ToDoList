@@ -69,7 +69,7 @@ describe('get inventory item by id', () => {
     );
   });
 
-  it('should return no users found for fake id', async () => {
+  it('should return no inv item found for fake id', async () => {
     await invalidRequest(
       '/inventory/getInvById/bad-id',
       'No inventory item found'
@@ -77,7 +77,7 @@ describe('get inventory item by id', () => {
   });
 
   it('a 500 error should be returned', async () => {
-    await errorRequest('/inventory/read_user/123');
+    await errorRequest('/inventory/getInvById/123');
   });
 });
 
@@ -111,7 +111,7 @@ describe('create new inventory item', () => {
     expect(response.body).toHaveProperty('_id');
 
     const inv = await Inventory.findOne({ _id: response.body._id });
-    expect(inv.invId).toBe(inventoryItem.userId);
+    expect(inv.invId).toBe(inventoryItem.invId);
     await inv.deleteOne({ _id: response.body._id });
   });
 
@@ -189,7 +189,9 @@ describe('update inventory item', () => {
   });
 
   it('should return a 404 error if there is no matching ID', async () => {
-    const response = await request(app).put('/users/0000').send(inventoryItem);
+    const response = await request(app)
+      .put('/inventory/0000')
+      .send(inventoryItem);
 
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('All fields must be filled out.');
@@ -197,11 +199,13 @@ describe('update inventory item', () => {
 
   it('should return a 500 error if there is an error in the database', async () => {
     // Make the save() function throw an error
-    jest.spyOn(Inventory, 'update_user').mockImplementation(() => {
+    jest.spyOn(Inventory, 'updateInvItem').mockImplementation(() => {
       throw new Error('Test error');
     });
 
-    const response = await request(app).put('/users/000000').send(Inventory);
+    const response = await request(app)
+      .put('/inventory/000000')
+      .send(Inventory);
 
     expect(response.status).toBe(500);
     expect(response.body).toHaveProperty('message', 'test error');
@@ -248,7 +252,7 @@ describe('delete inventory item', () => {
     );
 
     expect(getRes.status).toBe(404);
-    expect(getRes.body).toHaveProperty('message', 'User not found');
+    expect(getRes.body).toHaveProperty('message', 'inv item not found');
   });
 
   it('invalid ID should get turned away', async () => {
