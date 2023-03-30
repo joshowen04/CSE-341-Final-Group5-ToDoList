@@ -234,15 +234,17 @@ describe('delete inventory item', () => {
   ];
 
   it('should delete a todo item', async () => {
-    const createRes = await request(app).post('/users').send(inventoryItem);
+    const createRes = await request(app).post('/inventory').send(inventoryItem);
 
-    const deleteRes = await request(app).delete(`/users/${createRes.body._id}`);
+    const deleteRes = await request(app).delete(
+      `/inventory/${createRes.body._id}`
+    );
 
     expect(deleteRes.status).toBe(204);
 
     // Verify that the item was deleted
     const getRes = await request(app).get(
-      `/users/read_user/${createRes.body._id}`
+      `/inventory/getInvById/${createRes.body._id}`
     );
 
     expect(getRes.status).toBe(404);
@@ -250,7 +252,7 @@ describe('delete inventory item', () => {
   });
 
   it('invalid ID should get turned away', async () => {
-    const response = await request(app).delete('/users/invalid-id');
+    const response = await request(app).delete('/inventory/invalid-id');
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('Invalid ID.');
