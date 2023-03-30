@@ -111,7 +111,7 @@ exports.deleteInvItem = function (req, res) {
         if (error) {
           res.status(500).json(error);
         } else if (inv.deletedCount === 0) {
-          res.status(404).json({ message: 'Todo Item not found.' });
+          res.status(404).json({ message: 'Inventory Item not found.' });
         } else {
           res.status(204).json({ message: 'Inventory Item Deleted' });
         }
