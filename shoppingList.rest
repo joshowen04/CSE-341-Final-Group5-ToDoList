@@ -1,0 +1,47 @@
+//////////////////////////////////////////Local Host Test Routes///////////////////////////////////
+
+// SHOPPING LIST //
+
+POST http://localhost:3000/shoppingList HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Hot Dogs",
+  "quantity": "12"
+}
+
+//////////////////////////////////////////Local Host Test Routes///////////////////////////////////
+
+// SHOPPING LIST //
+
+// GET all shopping list items
+###
+GET http://localhost:3000/shoppingList
+
+// GET a single shopping list item by id
+###
+GET http://localhost:3000/shoppingList/64124f96b185302d39d9ef4c
+
+// CREATE a new shopping list item
+###
+POST http://localhost:3000/shoppingList
+Content-Type: application/json
+
+{
+"name": "Milk",
+"quantity": 1
+}
+
+// UPDATE a shopping list item by id
+###
+PUT http://localhost:3000/shoppingList/{id}
+Content-Type: application/json
+
+{
+"name": "Milk",
+"quantity": 2
+}
+
+// DELETE a shopping list item by id
+###
+DELETE http://localhost:3000/shoppingList/{id}

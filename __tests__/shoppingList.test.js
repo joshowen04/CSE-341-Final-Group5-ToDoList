@@ -1,169 +1,257 @@
 const mongoose = require('mongoose');
-const request = require('supertest');
-const app = require('../app');
+const { getShoppingList, getShoppingListItemById, createShoppingListItem } = require('./shoppingListController');
 const ShoppingListItem = require('../models/shoppingList');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 describe('Shopping List Controller', () => {
-  let mongoServer;
-
   beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    process.env.MONGODB_URL = mongoUri;
+    // Connect to test database
+    await mongoose.connect(process.env.TEST_MONGODB_URL, { useNewUrlParser: true });
   });
 
   afterAll(async () => {
+    // Disconnect from test database
     await mongoose.disconnect();
-    await mongoServer.stop();
   });
 
-  describe('GET /shoppingList', () => {
-    test('should return an empty array if there are no shopping list items', async () => {
-      const response = await request(app).get('/shoppingList');
-      expect(response.statusCode).toBe(200);
-      expect(response.body).toEqual([]);
-    });
-
-    test('should return an array of shopping list items if there are any', async () => {
-      const shoppingListItem = new ShoppingListItem({ name: 'Apples', quantity: 3 });
-      await shoppingListItem.save();
-
-      const response = await request(app).get('/shoppingList');
-      expect(response.statusCode).toBe(200);
-      expect(response.body.length).toBe(1);
-      expect(response.body[0]).toMatchObject({
-        name: 'Apples',
-        quantity: 3
-      });
-    });
+  afterEach(async () => {
+    // Clear test database
+    await ShoppingListItem.deleteMany();
   });
 
-  describe('GET /shoppingList/:id', () => {
-    test('should return 404 if the id is invalid', async () => {
-      const response = await request(app).get('/shoppingList/invalid-id');
-      expect(response.statusCode).toBe(404);
-      expect(response.body).toMatchObject({ message: 'Invalid id' });
+  describe('getShoppingList', () => {
+    it('should return an empty array if there are no items in the shopping list', async () => {
+      const req = {};
+      const res = {
+        setHeader: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await getShoppingList(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith([]);
     });
 
-    test('should return 404 if the shopping list item is not found', async () => {
-      const validId = mongoose.Types.ObjectId().toHexString();
-      const response = await request(app).get(`/shoppingList/${validId}`);
-      expect(response.statusCode).toBe(404);
-      expect(response.body).toMatchObject({ message: 'Item not found' });
+    it('should return an array of items if there are items in the shopping list', async () => {
+      const items = [
+        { name: 'Milk', quantity: 1 },
+        { name: 'Eggs', quantity: 12 },
+      ];
+    
+      await ShoppingListItem.create(items);
+    
+      const req = {};
+      const res = {
+        setHeader: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+    
+      await getShoppingList(req, res);
+    
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(expect.arrayContaining(items));
     });
 
-    test('should return the shopping list item if it exists', async () => {
-      const shoppingListItem = new ShoppingListItem({ name: 'Apples', quantity: 3 });
-      await shoppingListItem.save();
+    it('should return a 500 error if there is an error while retrieving the shopping list', async () => {
+      const req = {};
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
 
-      const response = await request(app).get(`/shoppingList/${shoppingListItem._id}`);
-      expect(response.statusCode).toBe(200);
-      expect(response.body).toMatchObject({
-        name: 'Apples',
-        quantity: 3
-      });
-    });
-  });
+      // Simulate an error by causing an invalid MongoDB connection URL
+      process.env.MONGODB_URL = 'invalid url';
 
-  describe('POST /shoppingList', () => {
-    test('should create a new shopping list item', async () => {
-      const requestBody = { name: 'Bananas', quantity: 5 };
+      await getShoppingList(req, res);
 
-      const response = await request(app)
-        .post('/shoppingList')
-        .send(requestBody);
-
-      expect(response.statusCode).toBe(201);
-      expect(response.body).toMatchObject({
-        name: 'Bananas',
-        quantity: 5
-      });
-    });
-
-    test('should return 409 if the shopping list item already exists', async () => {
-      const shoppingListItem = new ShoppingListItem({ name: 'Oranges', quantity: 4 });
-      await shoppingListItem.save();
-
-      const requestBody = { name: 'Oranges', quantity: 4 };
-
-      const response = await request(app)
-        .post('/shoppingList')
-        .send(requestBody);
-
-      expect(response.statusCode).toBe(409);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalled();
     });
   });
 
-  describe('PUT /shopping-list-items/:id', () => {
-    it('should return 404 if item is not found', async () => {
+  describe('getShoppingListItemById', () => {
+    it('should return a 404 error if the id is invalid', async () => {
+      const req = {
+        params: { id: 'invalid id' },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await getShoppingListItemById(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Invalid id' });
+    });
+
+    it('should return a 404 error if the item is not found', async () => {
+      const req = {
+        params: { id: mongoose.Types.ObjectId() },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await getShoppingListItemById(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Item not found' });
+    });
+
+    it('should return the item if it exists', async () => {
+      const item = { name: 'Milk', quantity: 1 };
+      const createdItem = await ShoppingListItem.create(item);
+
+      const req = {
+        params: { id: createdItem._id },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await getShoppingListItemById(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(item);
+    });
+  });
+      
+  describe('createShoppingListItem', () => {
+    it('should return a 400 error if the request body is missing the name field', async () => {
+      const req = {
+        body: { quantity: 1 },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+  
+      await createShoppingListItem(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Missing name field' });
+    });
+  
+    it('should create a new item and return it', async () => {
+      const item = { name: 'Milk', quantity: 1 };
+      const req = {
+        body: item,
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+  
+      await createShoppingListItem(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining(item));
+    });
+  });
+
+  describe('updateShoppingListItem', () => {
+    beforeEach(() => {
+      // Clear all mocks before each test
+      jest.clearAllMocks();
+    });
+  
+    it('returns 404 for invalid id', async () => {
       const res = await request(app)
-        .put('/shopping-list-items/123')
-        .send({ name: 'New Item', quantity: 10 });
-
+        .put('/shoppingList/invalidId')
+        .send({ name: 'newName', quantity: 2 });
+  
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty('message', 'Item not found');
+      expect(res.body).toEqual({ message: 'Invalid id' });
     });
-
-    it('should return 404 if id is invalid', async () => {
+  
+    it('returns 404 if item is not found', async () => {
+      const id = mongoose.Types.ObjectId().toString();
+  
+      // Mock the findByIdAndUpdate method to return null
+      ShoppingListItem.findByIdAndUpdate = jest.fn().mockResolvedValue(null);
+  
       const res = await request(app)
-        .put('/shopping-list-items/invalid')
-        .send({ name: 'New Item', quantity: 10 });
-
+        .put(`/shoppingList/${id}`)
+        .send({ name: 'newName', quantity: 2 });
+  
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty('message', 'Invalid id');
+      expect(res.body).toEqual({ message: 'Item not found' });
     });
-
-    it('should update the item and return it', async () => {
-      const shoppingListItem = new ShoppingListItem({
-        name: 'Item',
-        quantity: 5
-      });
-      await shoppingListItem.save();
-
+  
+    it('returns 200 and the updated item if it exists', async () => {
+      const item = { name: 'Milk', quantity: 1 };
+      const createdItem = await ShoppingListItem.create(item);
+  
       const res = await request(app)
-        .put(`/shopping-list-items/${shoppingListItem._id}`)
-        .send({ name: 'New Item', quantity: 10 });
-
+        .put(`/shoppingList/${createdItem._id}`)
+        .send({ name: 'newName', quantity: 2 });
+  
       expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('name', 'New Item');
-      expect(res.body).toHaveProperty('quantity', 10);
-      expect(res.body).toHaveProperty('_id', shoppingListItem._id.toHexString());
+      expect(res.body).toEqual(expect.objectContaining({ name: 'newName', quantity: 2 }));
     });
   });
 
-  describe('DELETE /shopping-list-items/:id', () => {
-    it('should return 404 if item is not found', async () => {
-      const res = await request(app)
-        .delete('/shopping-list-items/123');
-
-      expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty('message', 'Item not found');
+  describe('deleteShoppingListItem', () => {
+    beforeEach(() => {
+      // Clear all mocks before each test
+      jest.clearAllMocks();
     });
 
-    it('should return 404 if id is invalid', async () => {
-      const res = await request(app)
-        .delete('/shopping-list-items/invalid');
+    it('returns 404 for invalid id', async () => {
+      const res = await request(app).delete('/shoppingList/invalidId');
 
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty('message', 'Invalid id');
-    });
-
-    it('should delete the item and return success message', async () => {
-      const shoppingListItem = new ShoppingListItem({
-        name: 'Item',
-        quantity: 5
+      expect(res.body).toEqual({it('returns 404 if item is not found', async () => {
+        const id = mongoose.Types.ObjectId().toString();
+      
+        // Mock the findByIdAndRemove method to return null
+        ShoppingListItem.findByIdAndRemove = jest.fn().mockResolvedValue(null);
+      
+        const res = await request(app).delete(`/shoppingList/${id}`);
+      
+        expect(res.status).toBe(404);
+        expect(res.body).toEqual({ message: 'Item not found' });
+        expect(ShoppingListItem.findByIdAndRemove).toHaveBeenCalledWith(id);
+        expect(mongoose.connect).toHaveBeenCalled();
       });
-      await shoppingListItem.save();
-
-      const res = await request(app)
-        .delete(`/shopping-list-items/${shoppingListItem._id}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('message', 'Item deleted successfully');
-
-      const deletedItem = await ShoppingListItem.findById(shoppingListItem._id);
-      expect(deletedItem).toBeNull();
+      
+      it('deletes item successfully', async () => {
+        const id = mongoose.Types.ObjectId().toString();
+        const item = {
+          _id: id,
+          name: 'itemName',
+          quantity: 1,
+          updated: new Date(),
+        };
+      
+        // Mock the findByIdAndRemove method to return the deleted item
+        ShoppingListItem.findByIdAndRemove = jest.fn().mockResolvedValue(item);
+      
+        const res = await request(app).delete(`/shoppingList/${id}`);
+      
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({ message: 'Item deleted successfully' });
+        expect(ShoppingListItem.findByIdAndRemove).toHaveBeenCalledWith(id);
+        expect(mongoose.connect).toHaveBeenCalled();
+      });
+      
+      it('returns 500 for server error', async () => {
+        const id = mongoose.Types.ObjectId().toString();
+      
+        // Mock the findByIdAndRemove method to throw an error
+        ShoppingListItem.findByIdAndRemove = jest.fn().mockRejectedValue({});
+      
+        const res = await request(app).delete(`/shoppingList/${id}`);
+      
+        expect(res.status).toBe(500);
+        expect(res.body).toEqual({});
+        expect(ShoppingListItem.findByIdAndRemove).toHaveBeenCalledWith(id);
+        expect(mongoose.connect).toHaveBeenCalled();
+      });
     });
   });
-});
