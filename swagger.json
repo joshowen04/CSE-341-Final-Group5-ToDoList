@@ -11,7 +11,28 @@
     "https"
   ],
   "paths": {
-    "/user/users": {
+    "/auth/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/auth/callback": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/user/": {
       "get": {
         "description": "",
         "produces": [
@@ -53,7 +74,7 @@
         }
       }
     },
-    "/user/users/{userId}": {
+    "/user/{userId}": {
       "get": {
         "description": "",
         "produces": [

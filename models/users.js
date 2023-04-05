@@ -3,12 +3,13 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    userName: {
-      type: String
+    googleId: {
+      type: String,
+      required: false
     },
-    updated: {
-      type: Date,
-      default: new Date()
+    userName: {
+      type: String,
+      required: true
     }
   },
   { collection: 'users' }
