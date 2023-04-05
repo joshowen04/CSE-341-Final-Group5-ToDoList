@@ -5,24 +5,31 @@ const swaggerDocument = require('./swagger.json');
 const app = express();
 const session = require('express-session');
 const passport = require('passport');
-const crypto = require('crypto');
-
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const mongoStore = new MongoStore({
+  mongoUrl: process.env.MONGODB_URL,
+  collectionName: 'sessions'
+});
 
 function isAuthenticated (req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/auth');
 }
 
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true });
+const PORT = process.env.PORT || 3000;
+
 app
   .use(express.json())
   .use(cors())
   .use(
     session({
-      secret: crypto.randomBytes(32).toString('base64'),
+      secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: true,
+      store: mongoStore
     })
   )
   .use(passport.initialize(undefined))
