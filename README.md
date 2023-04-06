@@ -39,6 +39,8 @@ https://cse-341-final-group5-todolist.onrender.com
 
 mongodb+srv://team8:<pass>@cse341winter2023.vtlmrmi.mongodb.net/CSE-341-Final-Group5-ToDoList
 
+# Youtube: 
+https://www.youtube.com/watch?v=tx4DPjX9M_4
 # Schema draft:
 
 Collection 1 - Users (2 fields): (
