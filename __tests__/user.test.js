@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../server');
-const User = require('../models/user');
+const User = require('../models/users');
 const mongoose = require('mongoose');
 
 async function validRequest(userItem, route, calledWith) {
