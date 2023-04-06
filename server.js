@@ -7,7 +7,6 @@ const session = require('express-session');
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const mongoStore = new MongoStore({
   mongoUrl: process.env.MONGODB_URL,
@@ -25,18 +24,12 @@ const PORT = process.env.PORT || 3000;
 app
   .use(express.json())
   .use(cors())
-  .use(cookieParser())
   .use(
     session({
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: true,
-      store: mongoStore,
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-        sameSite: true,
-        secure: process.env.ENVIRONMENT === 'production' // cookies over https only when in production
-      }
+      store: mongoStore
     })
   )
   .use(passport.initialize(undefined))
